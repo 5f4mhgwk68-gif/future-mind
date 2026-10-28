@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}الملف الشخصي — Future Mind{% endblock %}
+{% block content %}
+<div class="container dash">
+  <h1>الملف الشخصي</h1>
+  <div class="grid-2">
+    <section class="panel">
+      <h2>{{ child.name }}</h2>
+      <ul class="list">
+        <li>العمر: {{ child.age }} سنة</li>
+        <li>الصف: {{ child.grade }}</li>
+        <li>المدرسة: {{ child.school }}</li>
+        <li>أسلوب التعلم: {{ child.get_learning_style_display }}</li>
+      </ul>
+    </section>
+    <section class="panel">
+      <h2>التاريخ المرضي</h2>
+      {% if health %}
+        <ul class="list">
+          <li>فصيلة الدم: {{ health.blood_type }}</li>
+          <li>أمراض مزمنة: {{ health.chronic_conditions|default:"لا توجد" }}</li>
+          <li>الحساسية: {{ health.allergies|default:"لا توجد" }}</li>
+          <li>أدوية: {{ health.medications|default:"لا توجد" }}</li>
+          <li>الطول / الوزن: {{ health.height_cm }} سم / {{ health.weight_kg }} كجم</li>
+          <li>ملاحظات: {{ health.notes }}</li>
+        </ul>
+      {% else %}<p class="muted">لا يوجد ملف صحي.</p>{% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}

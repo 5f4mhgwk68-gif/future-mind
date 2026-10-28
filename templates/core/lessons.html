@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}الدروس التفاعلية — Future Mind{% endblock %}
+{% block content %}
+<div class="container dash">
+  <h1>المنهج على شكل ألعاب وفيديوهات AI</h1>
+  <div class="grid-3">
+    {% for p in progress %}
+      <article class="panel">
+        <span class="pill">{{ p.lesson.get_fmt_display }}</span>
+        <h3>{{ p.lesson.title }}</h3>
+        <p class="muted">{{ p.lesson.subject.name }} · {{ p.lesson.duration_minutes }} دقيقة{% if p.lesson.character %} · بشخصية {{ p.lesson.character }}{% endif %}</p>
+        <div class="bar"><i style="width:{{ p.percent }}%"></i></div>
+        <p>{{ p.percent }}% مكتمل</p>
+        <button class="btn btn-primary" type="button">الانتقال للدرس</button>
+      </article>
+    {% empty %}<p class="muted">لا توجد دروس.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

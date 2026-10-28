@@ -1,0 +1,83 @@
+{% load static %}
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Future Mind — مستقبل طفلك بين يديك{% endblock %}</title>
+  <meta name="description" content="{% block description %}منصة ذكية ترافق طفلك في كل مرحلة عمرية: متابعة المستوى والحضور، فهم أسلوب تعلمه، خطة مستقبلية، ملف صحي، ومراقبة أبوية.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="{% url 'landing' %}">
+      <span class="brand-mark">FM</span>
+      <span>
+        <strong>Future Mind</strong>
+        <small>مستقبل طفلك بين يديك</small>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="{% url 'landing' %}">الرئيسية</a>
+      <a href="{% url 'dashboard' %}">لوحة المتابعة</a>
+      <a href="{% url 'plan' %}">الخطة المستقبلية</a>
+      <a href="{% url 'lessons' %}">الدروس التفاعلية</a>
+      <a href="{% url 'teachers' %}">المدرسون والمدارس</a>
+      <a href="{% url 'contact' %}">تواصل معي</a>
+    </nav>
+    <div class="header-actions">
+      {% if user.is_authenticated %}
+        <span class="chip">👋 {{ user.get_full_name|default:user.username }}</span>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+          <button class="btn btn-ghost" type="submit">تسجيل خروج</button>
+        </form>
+      {% else %}
+        <a class="btn btn-ghost" href="{% url 'login' %}">تسجيل دخول</a>
+        <a class="btn btn-primary" href="{% url 'signup' %}">حساب جديد</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p><strong>Future Mind</strong> — نرافق طفلك من الطفولة حتى اختيار مستقبله بثقة.</p>
+    <p class="muted">© {% now "Y" %} Future Mind. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+<div id="fm-chat" class="chat-panel" hidden>
+  <div class="chat-head">
+    <img class="chat-avatar" src="{% static 'img/mascot.png' %}" alt="" width="40" height="40">
+    <div><strong>Future Mind</strong><small>مساعد ذكي · متصل الآن</small></div>
+    <button type="button" id="fm-close" aria-label="إغلاق">✕</button>
+  </div>
+  <div class="chat-body" id="fm-body">
+    <div class="msg bot">مرحباً 👋 أنا Future Mind. اسألني عن مستوى طفلك، أسلوب تعلمه، خطته المستقبلية، أو ملفه الصحي.</div>
+  </div>
+  <div class="chat-quick">
+    <button type="button">إزاي بيتعلم ابني؟</button>
+    <button type="button">إيه مستواه الدراسي؟</button>
+    <button type="button">الخطة المستقبلية</button>
+    <button type="button">نشاط رياضي النهاردة</button>
+  </div>
+  <form id="fm-form" class="chat-form">
+    {% csrf_token %}
+    <input id="fm-input" name="message" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+    <button class="btn btn-primary" type="submit">إرسال</button>
+  </form>
+</div>
+<button id="fm-toggle" class="chat-fab" aria-label="افتح شات Future Mind">
+  <img src="{% static 'img/mascot.png' %}" alt="" width="44" height="44">
+</button>
+
+<script src="{% static 'js/chat.js' %}" data-url="{% url 'chat' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

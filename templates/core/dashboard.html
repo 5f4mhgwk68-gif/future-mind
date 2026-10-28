@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}لوحة المتابعة — Future Mind{% endblock %}
+
+{% block content %}
+<div class="container dash">
+  <div class="dash-head">
+    <div>
+      <h1>مرحباً {{ user.first_name|default:user.username }} 👋</h1>
+      <p class="muted">تابع تقدم {{ child.name }} اليوم</p>
+    </div>
+    <div class="chip">{{ child.name }} · {{ child.age }} سنة · {{ child.grade }}</div>
+  </div>
+
+  <div class="grid-4">
+    <div class="stat-card"><small>الحضور والانصراف</small><strong>{{ child.attendance_rate }}%</strong><div class="bar"><i style="width:{{ child.attendance_rate }}%"></i></div></div>
+    <div class="stat-card"><small>المعدل الدراسي</small><strong>{{ child.average_score }}%</strong><div class="bar"><i style="width:{{ child.average_score }}%"></i></div></div>
+    <div class="stat-card"><small>نسبة الاستيعاب</small><strong>{{ child.comprehension_score }}%</strong><div class="bar"><i style="width:{{ child.comprehension_score }}%"></i></div></div>
+    <div class="stat-card"><small>وقت الشاشة اليوم</small><strong>{{ child.daily_screen_minutes }} د</strong><span class="{% if child.focus_mode %}ok{% else %}warn{% endif %}">{% if child.focus_mode %}وضع التركيز مفعّل{% else %}وضع التركيز متوقف{% endif %}</span></div>
+  </div>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h2>التقدم الأكاديمي</h2>
+      <div class="chart">
+        {% for point in chart %}
+          <div class="col" title="{{ point.label }} — {{ point.value }}%">
+            <i style="height:{{ point.value }}%"></i>
+            <span>{{ point.label }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="subject-row">
+        {% for name, score in subjects.items %}
+          <div class="subject"><span>{{ name }}</span><strong>{{ score }}%</strong></div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>الخطة التعليمية الذكية</h2>
+      <div class="highlight">
+        <small>أسلوب التعلم الخاص بـ {{ child.name }}</small>
+        <strong>{{ child.get_learning_style_display }}</strong>
+      </div>
+      <ul class="list">
+        <li>🎬 فيديوهات AI قصيرة بشخصية يحبها</li>
+        <li>🎧 شرح صوتي بعد كل درس</li>
+        <li>🧩 اختبارات تفاعلية على شكل ألعاب</li>
+      </ul>
+      {% if plan %}
+        <div class="highlight">
+          <small>المسار المستقبلي المرشّح</small>
+          <strong>{{ plan.target_field }} — توافق {{ plan.match_percent }}%</strong>
+        </div>
+      {% endif %}
+      <a class="btn btn-primary" href="{% url 'plan' %}">عرض الخطة الكاملة</a>
+    </section>
+  </div>
+
+  <div class="grid-3">
+    <section class="panel">
+      <h2>معلومات صحية</h2>
+      {% if health %}
+        <ul class="list">
+          <li>فصيلة الدم: {{ health.blood_type }}</li>
+          <li>أمراض مزمنة: {{ health.chronic_conditions|default:"لا توجد" }}</li>
+          <li>الحساسية: {{ health.allergies|default:"لا توجد" }}</li>
+          <li>آخر فحص: {{ health.last_checkup }}</li>
+        </ul>
+        <div class="highlight"><small>النشاط البدني الموصى به</small><strong>{{ health.daily_activity_minutes }} دقيقة يومياً</strong></div>
+      {% else %}<p class="muted">لا يوجد ملف صحي بعد.</p>{% endif %}
+    </section>
+
+    <section class="panel">
+      <h2>المراقبة الأبوية</h2>
+      {% if control %}
+        <ul class="list">
+          <li>الموقع الحالي: {{ control.last_location|default:"غير متاح" }}</li>
+          <li>حد وقت الشاشة: {{ control.screen_limit_minutes }} دقيقة</li>
+          <li>حظر السوشيال: {{ control.block_social_from|time:"H:i" }} → {{ control.block_social_to|time:"H:i" }}</li>
+          <li>مشاركة الموقع: {{ control.location_sharing|yesno:"مفعّلة,متوقفة" }}</li>
+        </ul>
+      {% else %}<p class="muted">لم يتم ضبط أدوات المراقبة بعد.</p>{% endif %}
+    </section>
+
+    <section class="panel">
+      <h2>الحضور آخر أيام</h2>
+      <ul class="list">
+        {% for a in attendances %}
+          <li>{{ a.date }} — <span class="{% if a.status == 'present' %}ok{% elif a.status == 'late' %}warn{% else %}bad{% endif %}">{{ a.get_status_display }}</span></li>
+        {% empty %}<li class="muted">لا توجد سجلات.</li>{% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h2>تعلم بطريقة ممتعة مع الذكاء الاصطناعي</h2>
+      {% for p in lessons %}
+        <div class="lesson">
+          <div><strong>{{ p.lesson.title }}</strong><small>{{ p.lesson.get_fmt_display }}{% if p.lesson.character %} · {{ p.lesson.character }}{% endif %}</small></div>
+          <div class="bar"><i style="width:{{ p.percent }}%"></i></div>
+          <span>{{ p.percent }}%</span>
+        </div>
+      {% empty %}<p class="muted">لا توجد دروس بعد.</p>{% endfor %}
+      <a class="btn btn-ghost" href="{% url 'lessons' %}">كل الدروس</a>
+    </section>
+
+    <section class="panel">
+      <h2>تقييم المعلمين والمدارس</h2>
+      {% for t in top_teachers %}
+        <div class="lesson"><div><strong>{{ t.name }}</strong><small>{{ t.subject }}</small></div><span>★ {{ t.rating }} ({{ t.reviews_count }})</span></div>
+      {% endfor %}
+      <a class="btn btn-ghost" href="{% url 'teachers' %}">عرض المزيد من التقييمات</a>
+    </section>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}حساب جديد — Future Mind{% endblock %}
+{% block content %}
+<div class="container auth">
+  <form class="panel" method="post">
+    {% csrf_token %}
+    <h1>حساب جديد</h1>
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">إنشاء الحساب</button>
+  </form>
+</div>
+{% endblock %}

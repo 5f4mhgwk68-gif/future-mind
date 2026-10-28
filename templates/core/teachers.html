@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}تقييم المدرسين والمدارس — Future Mind{% endblock %}
+{% block content %}
+<div class="container dash">
+  <h1>المدرسون والمدارس</h1>
+  <div class="grid-2">
+    {% for t in teachers %}
+      <article class="panel">
+        <h3>{{ t.name }}</h3>
+        <p class="muted">{{ t.get_kind_display }} · {{ t.subject }} · {{ t.city }}</p>
+        <p><strong>★ {{ t.rating }}</strong> ({{ t.reviews_count }} تقييم)</p>
+        {% if user.is_authenticated %}
+          <form method="post" action="{% url 'add_review' t.id %}" class="review-form">
+            {% csrf_token %}
+            <select name="stars">
+              <option value="5">5 نجوم</option>
+              <option value="4">4 نجوم</option>
+              <option value="3">3 نجوم</option>
+              <option value="2">نجمتان</option>
+              <option value="1">نجمة</option>
+            </select>
+            <input name="comment" placeholder="اكتب تقييمك...">
+            <button class="btn btn-primary" type="submit">إرسال</button>
+          </form>
+        {% endif %}
+        <ul class="list">
+          {% for r in t.reviews.all|slice:":3" %}<li>★{{ r.stars }} — {{ r.comment }}</li>{% endfor %}
+        </ul>
+      </article>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

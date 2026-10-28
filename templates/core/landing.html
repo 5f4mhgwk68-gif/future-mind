@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="pill">✨ منصة ذكاء اصطناعي لمتابعة الأطفال</span>
+      <h1>من الطفولة... <span class="grad">نرسم مستقبله بثقة</span></h1>
+      <p>منصة ذكية ترافق طفلك في كل مرحلة عمرية، تفهم طريقة استيعابه، تبعده عن تشتت السوشيال ميديا، وتساعده على التعلم والنمو واختيار مستقبله.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}">ابدأ رحلة طفلك الآن</a>
+        <a class="btn btn-ghost btn-lg" href="#features">شاهد كيف يعمل</a>
+      </div>
+      <p class="muted">+{{ stats.families }} أسرة تثق بنا</p>
+    </div>
+
+    <div class="hero-visual">
+      <img src="{% static 'img/hero.jpg' %}" alt="طفل يتعلم عبر منصة Future Mind" width="520" height="520">
+      <div class="float-card card-a">
+        <small>التقدم العام</small>
+        <strong>85%</strong>
+        <span class="ok">ممتاز — استمر ↗</span>
+      </div>
+      <div class="float-card card-b">
+        <small>مستوى الفهم</small>
+        <strong>سمعي / بصري</strong>
+        <span>يتعلم أفضل بالشرح المرئي والفيديو</span>
+      </div>
+      <div class="float-card card-c">
+        <small>المهمة القادمة 🏆</small>
+        <strong>حل تمارين الرياضيات</strong>
+        <span>المستوى المتقدم</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container" id="features">
+  <h2 class="section-title">الإمكانيات</h2>
+  <div class="grid-4">
+    <article class="feature"><span class="ico">📊</span><h3>مراقبة ذكية للمستوى</h3><p>درجات، حضور وانصراف، وسلوك يومي في مكان واحد.</p></article>
+    <article class="feature"><span class="ico">🧠</span><h3>فهم طريقة تفكير طفلك</h3><p>نحدد إن كان يتعلم بالسمع أو القراءة أو الكتابة ونبني منهجه.</p></article>
+    <article class="feature"><span class="ico">🚩</span><h3>خطة طويلة المدى</h3><p>نوجّه تفكيره خطوة بخطوة نحو المجال الذي يناسبه.</p></article>
+    <article class="feature"><span class="ico">❤️</span><h3>ملف صحي متكامل</h3><p>التاريخ المرضي والحساسية والفحوصات داخل بروفايل الطفل.</p></article>
+    <article class="feature"><span class="ico">🛡️</span><h3>أدوات مراقبة أبوية</h3><p>وقت الشاشة، التطبيقات، الموقع، وتنبيهات فورية.</p></article>
+    <article class="feature"><span class="ico">⭐</span><h3>تقييم المدرسين والمدارس</h3><p>آراء حقيقية من أولياء الأمور لاختيار الأفضل لابنك.</p></article>
+    <article class="feature"><span class="ico">🎮</span><h3>المنهج كلعبة وفيديو AI</h3><p>نحوّل الدرس إلى مغامرة بصوت وشكل شخصية يحبها.</p></article>
+    <article class="feature"><span class="ico">🏃</span><h3>صحة ورياضة</h3><p>توصيات نشاط بدني يومي وعادات نوم وتغذية.</p></article>
+  </div>
+</section>
+
+<section class="container">
+  <div class="stats">
+    <div><strong>+{{ stats.families }}</strong><span>أسرة تثق بنا</span></div>
+    <div><strong>+{{ stats.teachers }}</strong><span>مدرسة ومعلم</span></div>
+    <div><strong>+{{ stats.students }}</strong><span>طالب وطالبة</span></div>
+    <div><strong>97%</strong><span>تحسّن في المستوى</span></div>
+    <div><strong>{{ stats.rating }}/5</strong><span>تقييم أولياء الأمور</span></div>
+  </div>
+</section>
+{% endblock %}

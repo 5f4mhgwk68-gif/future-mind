@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}الخطة المستقبلية — Future Mind{% endblock %}
+{% block content %}
+<div class="container dash">
+  <h1>الخطة طويلة المدى</h1>
+  {% if plan %}
+    <div class="panel">
+      <div class="highlight"><small>المجال المستهدف</small><strong>{{ plan.target_field }} — توافق {{ plan.match_percent }}%</strong></div>
+      <p>{{ plan.summary }}</p>
+      <ol class="timeline">
+        {% for m in plan.milestones.all %}
+          <li class="{% if m.done %}done{% endif %}">
+            <span class="year">{{ m.age_label }}</span>
+            <strong>{{ m.title }}</strong>
+            <p class="muted">{{ m.description }}</p>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  {% else %}<p class="muted">لا توجد خطة بعد.</p>{% endif %}
+</div>
+{% endblock %}

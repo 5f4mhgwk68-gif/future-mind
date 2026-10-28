@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}تواصل معي — Future Mind{% endblock %}
+{% block content %}
+<div class="container dash">
+  <span class="pill">من أنا</span>
+  <h1>Abdelrahman Hassany</h1>
+  <p class="muted">مطور برمجيات — القاهرة</p>
+
+  <div class="grid-2">
+    <article class="panel">
+      <h2>بيانات التواصل</h2>
+      <ul class="list">
+        <li>📧 البريد الإلكتروني: <a href="mailto:abdelrahman.hassany@gmail.com">abdelrahman.hassany@gmail.com</a></li>
+        <li>📱 الهاتف / واتساب: <a href="tel:01044382938">01044382938</a></li>
+        <li>📍 العنوان: Tanta</li>
+        <li>🌐 الموقع: <a href="https://abdelrahman-hassany.github.io" target="_blank" rel="noopener">https://abdelrahman-hassany.github.io</a></li>
+      </ul>
+      <div class="hero-cta">
+        {% for s in owner.socials %}
+          <a class="btn btn-ghost" href="{{ s.url }}" target="_blank" rel="noopener">{{ s.icon }} {{ s.name }}</a>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="panel">
+      <h2>نبذة عني</h2>
+      <p>أنا عبد الرحمن حسني، مطور برمجيات مختص في تطوير التطبيقات الويب والجوالة. أسعى دائماً لتقديم حلول برمجية مبتكرة تلبي احتياجات المستخدمين.</p>
+      <div class="highlight">
+        <strong>عن مشروع Future Mind</strong>
+        منصة تتابع الطفل في كل مراحله العمرية: المستوى الدراسي، أسلوب الاستيعاب، الخطة المستقبلية，
+        الصحة، والمراقبة الأبوية — بعيداً عن تشتت السوشيال ميديا.
+      </div>
+      <h3>مهارات</h3>
+      <div class="hero-cta">
+        {% for skill in owner.skills %}<span class="chip">{{ skill }}</span>{% endfor %}
+      </div>
+    </article>
+  </div>
+
+  <article class="panel">
+    <h2>ابعتلي رسالة</h2>
+    {% if sent %}<div class="highlight"><strong>تم استلام رسالتك ✅</strong> هرد عليك في أقرب وقت.</div>{% endif %}
+    <form method="post" class="review-form">
+      {% csrf_token %}
+      <input name="name" placeholder="اسمك" required>
+      <input name="email" type="email" placeholder="بريدك الإلكتروني" required>
+      <input name="message" placeholder="رسالتك..." required>
+      <button class="btn btn-primary" type="submit">إرسال</button>
+    </form>
+  </article>
+</div>
+{% endblock %}
